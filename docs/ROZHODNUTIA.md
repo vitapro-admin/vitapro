@@ -22,6 +22,8 @@ Priebežný záznam dohôd s klientom (AQUA PRO EUROPE, a.s.).
 - **Bez napojenia na ActiWhere.** Systém funguje len cez emaily:
   potvrdenie s rekapituláciou zákazníkovi + email s objednávkou pre AQUA PRO.
   Všetko ostatné AQUA PRO rieši ručne.
+- **Bez požadovaného termínu dodania** (29. 10. 2026): šťavy sa dovážajú s najbližšou dodávkou
+  pramenitej vody AQUA PRO; po objednávke sa zobrazí táto informácia.
 
 ## Pri spustení (checklist)
 - **Zapnúť indexovanie:** vo Verceli nastaviť `ALLOW_INDEXING=true` (Config, Production) a nasadiť znova.
