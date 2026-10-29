@@ -28,7 +28,7 @@ export function SiteFooter() {
           <div className="flex items-start gap-3">
             <Image src="/logo/vuood.svg" alt="VÚOOD" width={83} height={119} className="h-14 w-auto invert" />
             <p className="leading-relaxed">
-              Pre AQUA PRO EUROPE, a.s. exkluzívne vyrobil Výskumný ústav ovocných a okrasných drevín a.s., Bojnice
+              Pre AQUA PRO EUROPE, a.s. exkluzívne vyrába Výskumný ústav ovocných a okrasných drevín a.s., Bojnice
             </p>
           </div>
         </div>
