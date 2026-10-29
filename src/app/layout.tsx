@@ -32,6 +32,12 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     <html lang="sk" className={`${inter.variable} ${playfair.variable}`}>
       <body className="min-h-dvh font-sans">
         <CartProvider enabled={canOrder(viewer)}>
+          {/* Do ostrého spustenia (ALLOW_INDEXING=true) je web v testovacej prevádzke. */}
+          {process.env.ALLOW_INDEXING !== 'true' && (
+            <div className="bg-warn px-4 py-2 text-center text-sm text-white">
+              Testovacia prevádzka – objednávky sa zatiaľ nevybavujú a nebudú doručené.
+            </div>
+          )}
           <SiteHeader viewer={viewer} />
           {children}
           <SiteFooter />

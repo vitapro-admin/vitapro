@@ -28,7 +28,7 @@ Priebežný záznam dohôd s klientom (AQUA PRO EUROPE, a.s.).
   pramenitej vody AQUA PRO; po objednávke sa zobrazí táto informácia.
 
 ## Pri spustení (checklist)
-- **Zapnúť indexovanie:** vo Verceli nastaviť `ALLOW_INDEXING=true` (Config, Production) a nasadiť znova.
+- **Zapnúť indexovanie a vypnúť pásik „Testovacia prevádzka“:** vo Verceli nastaviť `ALLOW_INDEXING=true` (Config, Production) a nasadiť znova.
 - Prejsť na Vercel Pro (komerčné použitie) a Supabase Pro (zálohy).
 - Po prechode na Vercel Pro prepnúť repozitár na súkromný (Hobby nasadzuje zo súkromného repozitára len commity vlastníka).
 - Zrušiť starý projekt na Verceli (účet peterivan78).
@@ -37,6 +37,8 @@ Priebežný záznam dohôd s klientom (AQUA PRO EUROPE, a.s.).
 - Websupport: presmerovanie pošty @vita-pro.sk → `hotline@aquapro.sk`.
 - AQUA PRO: pravidlo v pošte, aby emaily z @vita-pro.sk nešli do spamu (iCloud ich pri novej doméne označil).
 
+## Právne texty
+- VOP, ochrana osobných údajov a cookies: návrh (29. 10. 2026) – na schválenie AQUA PRO, ideálne s právnikom.
+  Overiť IČ DPH, región Supabase a dátum účinnosti.
+
 ## Neskôr
-- Zmena prihlasovacieho emailu zákazníka (návrh: v administrácii; samoobsluha cez potvrdenie emailom neskôr).
-- Administrácia: vizuálne zladiť s webom, aby bola pekná a príjemná na používanie.

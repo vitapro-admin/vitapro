@@ -25,5 +25,8 @@ export const COMPANY = {
   name: 'AQUA PRO EUROPE, a.s.',
   street: 'Pod Furčou 7',
   city: '040 01 Košice',
+  ico: '50886771',
+  dic: '2120511745',
+  register: 'Obchodnom registri Mestského súdu Košice, oddiel Sa, vložka č. 1695/V',
   producer: 'Výskumný ústav ovocných a okrasných drevín a.s., Prievidzská 1457/73, 972 01 Bojnice',
 }
