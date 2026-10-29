@@ -1,7 +1,5 @@
 import { buildOrderPayload } from '@/lib/orders/orderPayload'
 import {
-  JSON_BEGIN,
-  JSON_END,
   customerConfirmationEmail,
   escapeHtml,
   formatDateSk,
@@ -63,10 +61,11 @@ describe('internalOrderEmail', () => {
     expect(email.subject).toBe('[OBJEDNÁVKA] OBJ-2026-00042 | Bistro <Jablko> s.r.o. | IČO 12345678 | 24 ks')
   })
 
-  it('embeds the exact JSON payload between markers in the text body', () => {
-    const start = email.text.indexOf(JSON_BEGIN) + JSON_BEGIN.length
-    const end = email.text.indexOf(JSON_END)
-    expect(JSON.parse(email.text.slice(start, end))).toEqual(payload)
+  it('keeps the body readable and points to the JSON attachment', () => {
+    expect(email.text).not.toContain('"schema"')
+    expect(email.html).not.toContain('"schema"')
+    expect(email.text).toContain('objednavka-OBJ-2026-00042.json')
+    expect(email.text).toContain('1. Cvikla [VP-CVIKLA-033] – 18 ks')
   })
 
   it('escapes customer-provided text in HTML', () => {
@@ -103,7 +102,7 @@ describe('cancellation', () => {
     expect(withLink.text).toContain('12:30') // termín v slovenskom čase
   })
 
-  it('tells sales not to process a cancelled order, with machine-readable JSON', () => {
+  it('tells sales not to process a cancelled order', () => {
     const email = internalCancellationEmail({
       order_number: 'OBJ-2026-00042',
       company_name: 'Bistro s.r.o.',
@@ -113,8 +112,8 @@ describe('cancellation', () => {
       via: 'email',
     })
     expect(email.subject).toBe('[ZRUŠENÁ] OBJ-2026-00042 | Bistro s.r.o. | IČO 12345678')
-    const json = email.text.slice(email.text.indexOf(JSON_BEGIN) + JSON_BEGIN.length, email.text.indexOf(JSON_END))
-    expect(JSON.parse(json)).toMatchObject({ schema: 'vitapro.order-cancellation.v1', order_number: 'OBJ-2026-00042', via: 'email' })
+    expect(email.text).toContain('Objednávku nespracúvajte.')
+    expect(email.html).toContain('odkazom z potvrdzovacieho emailu')
   })
 })
 
