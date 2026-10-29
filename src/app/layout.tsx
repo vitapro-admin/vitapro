@@ -22,7 +22,8 @@ export const metadata: Metadata = {
   title: { default: 'VITAPRO – 100% prírodné šťavy', template: '%s | VITAPRO' },
   description:
     'Objednávky 100% prírodných štiav VITAPRO pre obchodných partnerov AQUA PRO EUROPE, a.s. Lisované z čerstvého ovocia a zeleniny zo slovenských sadov a polí.',
-  robots: { index: true, follow: true },
+  // Pred spustením neindexovať – zapína sa premennou ALLOW_INDEXING=true.
+  robots: process.env.ALLOW_INDEXING === 'true' ? { index: true, follow: true } : { index: false, follow: false },
 }
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {

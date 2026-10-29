@@ -23,5 +23,10 @@ Priebežný záznam dohôd s klientom (AQUA PRO EUROPE, a.s.).
   potvrdenie s rekapituláciou zákazníkovi + email s objednávkou pre AQUA PRO.
   Všetko ostatné AQUA PRO rieši ručne.
 
+## Pri spustení (checklist)
+- **Zapnúť indexovanie:** vo Verceli nastaviť `ALLOW_INDEXING=true` (Config, Production) a nasadiť znova.
+- Prejsť na Vercel Pro (komerčné použitie) a Supabase Pro (zálohy).
+- Zmazať testovacie účty a objednávky.
+
 ## Neskôr
 - Administrácia: vizuálne zladiť s webom, aby bola pekná a príjemná na používanie.
