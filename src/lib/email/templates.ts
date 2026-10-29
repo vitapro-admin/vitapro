@@ -90,7 +90,7 @@ ${o.eyebrow ? `<p style="margin:0 0 12px;font-size:11px;letter-spacing:3px;text-
 </td></tr>
 <tr><td align="center" style="padding:28px 24px 0;font-size:12px;line-height:1.7;color:${C.mute}">
 <span style="font-family:${SERIF};font-style:italic;font-size:14px;color:${C.soft}">100% prírodné šťavy zo slovenských sadov a polí</span><br>
-AQUA PRO EUROPE, a.s. · Pod furčou 7 · 040 01 Košice<br>
+AQUA PRO EUROPE, a.s. · Pod Furčou 7 · 040 01 Košice<br>
 <a href="${escapeHtml(siteUrl('/'))}" style="color:${C.mute}">${escapeHtml(siteUrl('/').replace(/^https?:\/\//, '').replace(/\/$/, ''))}</a>
 </td></tr>
 </table></td></tr></table></body></html>`
