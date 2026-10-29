@@ -144,7 +144,11 @@ export async function setClientStatusAction(formData: FormData) {
   if (id === admin.userId) return // admin si nezablokuje sám seba
 
   const db = createServiceClient()
-  const { data: before } = await db.from('profiles').select('status, role, is_superadmin, contact_name, email, approved_at').eq('id', id).single()
+  const { data: before } = await db
+    .from('profiles')
+    .select('status, role, is_superadmin, contact_name, email, approved_at, ico, company_name')
+    .eq('id', id)
+    .single()
   // Adminov (a superadmina) cez web neblokujeme – rieši sa to v Supabase.
   if (before && (before.role === 'admin' || before.is_superadmin) && status !== 'approved') return
   await db
@@ -156,6 +160,13 @@ export async function setClientStatusAction(formData: FormData) {
     .eq('id', id)
 
   if (status === 'approved' && before && before.status !== 'approved') {
+    // Schválený klient patrí medzi klientov – IČO doplníme do zoznamu
+    // (existujúci záznam, napr. z importu ActiWhere, sa neprepisuje).
+    if (/^\d{6,10}$/.test(before.ico ?? '')) {
+      await db.from('client_whitelist').upsert({ ico: before.ico, company_name: before.company_name ?? '', note: 'pridané pri schválení' }, { onConflict: 'ico', ignoreDuplicates: true })
+      await db.from('profiles').update({ ico_known: true }).eq('ico', before.ico)
+      revalidatePath('/admin/ico')
+    }
     await sendEmail({ to: before.email, ...accountApprovedEmail({ contact_name: before.contact_name, siteUrl: siteUrl('/#stavy') }) })
   }
   revalidatePath('/admin/klienti')
