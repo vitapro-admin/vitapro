@@ -1,5 +1,6 @@
 import { requireAdminPage } from '@/lib/auth'
-import { saveClientNoteAction, setClientStatusAction } from '@/app/admin/actions'
+import { deleteClientAction, saveClientNoteAction, setClientStatusAction } from '@/app/admin/actions'
+import { ConfirmButton } from '@/components/form/ConfirmButton'
 import { AdminTitle, Badge, Empty, FilterTabs } from '@/components/admin/ui'
 import { formatDateTimeSk } from '@/lib/email/templates'
 import { createServiceClient } from '@/lib/supabase/server'
@@ -81,6 +82,17 @@ export default async function AdminClientsPage({ searchParams }: PageProps<'/adm
                       <input type="hidden" name="id" value={c.id} />
                       <input type="hidden" name="status" value="blocked" />
                       <button className="btn btn-ghost !py-2 text-sm text-danger">{c.status === 'pending' ? 'Zamietnuť' : 'Zablokovať'}</button>
+                    </form>
+                  )}
+                  {c.role !== 'admin' && (
+                    <form action={deleteClientAction}>
+                      <input type="hidden" name="id" value={c.id} />
+                      <ConfirmButton
+                        message={`Naozaj natrvalo zmazať ${c.company_name || c.email}? Zmaže sa účet aj adresy, objednávky ostanú v evidencii.`}
+                        className="btn btn-ghost !py-2 text-sm text-danger"
+                      >
+                        Zmazať
+                      </ConfirmButton>
                     </form>
                   )}
                 </div>

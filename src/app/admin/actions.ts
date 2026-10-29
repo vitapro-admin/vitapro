@@ -161,6 +161,20 @@ export async function setClientStatusAction(formData: FormData) {
   revalidatePath('/admin/klienti')
 }
 
+/** Zmaže prihlasovací účet zákazníka aj s profilom a adresami. Objednávky
+ * ostávajú (s uloženými údajmi odberateľa) kvôli evidencii. Adminov nie. */
+export async function deleteClientAction(formData: FormData) {
+  const admin = await requireAdmin()
+  const id = String(formData.get('id'))
+  if (id === admin.userId) return
+  const db = createServiceClient()
+  const { data: target } = await db.from('profiles').select('role, is_superadmin').eq('id', id).single()
+  if (!target || target.role === 'admin' || target.is_superadmin) return
+  const { error } = await db.auth.admin.deleteUser(id)
+  if (error) console.error('[admin] zmazanie klienta zlyhalo:', error.message)
+  revalidatePath('/admin/klienti')
+}
+
 export async function saveClientNoteAction(formData: FormData) {
   await requireAdmin()
   const note = String(formData.get('admin_note') ?? '').slice(0, 2000)
