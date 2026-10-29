@@ -1,0 +1,26 @@
+<!doctype html><html lang="sk"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light only"><title>Potvrďte zmenu emailu – VITAPRO</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+</head>
+<body style="margin:0;padding:0;background:#f6f2eb;font-family:Inter,'Helvetica Neue',Helvetica,Arial,sans-serif;color:#1c1a19;-webkit-font-smoothing:antialiased">
+<div style="display:none;max-height:0;overflow:hidden;opacity:0">Potvrďte novú emailovú adresu k účtu VITAPRO.</div>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f6f2eb">
+<tr><td align="center" style="padding:36px 12px 48px">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:600px">
+<tr><td align="center" style="padding:0 0 28px">
+<a href="{{ .SiteURL }}/"><img src="{{ .SiteURL }}/email/vitapro-logo.png" width="170" height="31" alt="VITAPRO" style="display:block;border:0"></a>
+</td></tr>
+<tr><td style="background:#ffffff;border:1px solid #e2dacd;border-radius:14px;padding:36px 32px 32px">
+<p style="margin:0 0 12px;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#8a847b">Zmena emailu</p>
+<h1 style="margin:0 0 20px;font-family:'Playfair Display',Georgia,'Times New Roman',serif;font-weight:400;font-size:30px;line-height:1.2;color:#1c1a19">Potvrďte <em style="font-style:italic">novú adresu</em></h1>
+<div style="font-size:15px;line-height:1.6;color:#57524c"><p style="margin:0 0 4px">Dobrý deň,</p>
+<p style="margin:0">k vášmu účtu VITAPRO bola zadaná nová emailová adresa <strong>{{ .NewEmail }}</strong>. Zmenu potvrdíte tlačidlom nižšie.</p>
+<p style="margin:28px 0 0"><a href="{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&amp;type=email_change&amp;next=/ucet" style="display:inline-block;background:#1c1a19;color:#ffffff;border:1px solid #1c1a19;padding:12px 24px;border-radius:999px;font-size:14px;font-weight:600;text-decoration:none">Potvrdiť zmenu</a></p>
+<p style="margin:20px 0 0;font-size:13px">Ak ste zmenu nežiadali, kontaktujte prosím obchodné oddelenie.</p></div>
+</td></tr>
+<tr><td align="center" style="padding:28px 24px 0;font-size:12px;line-height:1.7;color:#8a847b">
+<span style="font-family:'Playfair Display',Georgia,'Times New Roman',serif;font-style:italic;font-size:14px;color:#57524c">100% prírodné šťavy zo slovenských sadov a polí</span><br>
+AQUA PRO EUROPE, a.s. · Pod Furčou 7 · 040 01 Košice<br>
+<a href="{{ .SiteURL }}/" style="color:#8a847b">{{ .SiteURL }}</a>
+</td></tr>
+</table></td></tr></table></body></html>

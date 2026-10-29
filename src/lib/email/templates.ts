@@ -66,9 +66,12 @@ type LayoutOptions = {
   heading: string
   /** Doplnok nadpisu kurzívou (ako „zo slovenských sadov“ na webe). */
   headingEm?: string
+  /** Adresa webu pre logo a pätičku; predvolene NEXT_PUBLIC_SITE_URL (šablóny Supabase dávajú {{ .SiteURL }}). */
+  siteBase?: string
 }
 
-function layout(title: string, o: LayoutOptions, body: string): string {
+export function layout(title: string, o: LayoutOptions, body: string): string {
+  const site = (path: string) => (o.siteBase ? `${o.siteBase}${path}` : siteUrl(path))
   return `<!doctype html><html lang="sk"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="color-scheme" content="light only"><title>${escapeHtml(title)}</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
@@ -79,7 +82,7 @@ ${o.preheader ? `<div style="display:none;max-height:0;overflow:hidden;opacity:0
 <tr><td align="center" style="padding:36px 12px 48px">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:600px">
 <tr><td align="center" style="padding:0 0 28px">
-<a href="${escapeHtml(siteUrl('/'))}"><img src="${escapeHtml(siteUrl('/email/vitapro-logo.png'))}" width="170" height="31" alt="VITAPRO" style="display:block;border:0"></a>
+<a href="${escapeHtml(site('/'))}"><img src="${escapeHtml(site('/email/vitapro-logo.png'))}" width="170" height="31" alt="VITAPRO" style="display:block;border:0"></a>
 </td></tr>
 <tr><td style="background:#ffffff;border:1px solid ${C.line};border-radius:14px;padding:36px 32px 32px">
 ${o.eyebrow ? `<p style="margin:0 0 12px;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:${C.mute}">${escapeHtml(o.eyebrow)}</p>` : ''}
@@ -91,7 +94,7 @@ ${o.eyebrow ? `<p style="margin:0 0 12px;font-size:11px;letter-spacing:3px;text-
 <tr><td align="center" style="padding:28px 24px 0;font-size:12px;line-height:1.7;color:${C.mute}">
 <span style="font-family:${SERIF};font-style:italic;font-size:14px;color:${C.soft}">100% prírodné šťavy zo slovenských sadov a polí</span><br>
 AQUA PRO EUROPE, a.s. · Pod Furčou 7 · 040 01 Košice<br>
-<a href="${escapeHtml(siteUrl('/'))}" style="color:${C.mute}">${escapeHtml(siteUrl('/').replace(/^https?:\/\//, '').replace(/\/$/, ''))}</a>
+<a href="${escapeHtml(site('/'))}" style="color:${C.mute}">${escapeHtml(site('/').replace(/^https?:\/\//, '').replace(/\/$/, ''))}</a>
 </td></tr>
 </table></td></tr></table></body></html>`
 }
@@ -100,7 +103,7 @@ function sectionTitle(text: string): string {
   return `<p style="margin:28px 0 8px;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:${C.mute}">${escapeHtml(text)}</p>`
 }
 
-function button(href: string, label: string, variant: 'dark' | 'danger' = 'dark'): string {
+export function button(href: string, label: string, variant: 'dark' | 'danger' = 'dark'): string {
   const style =
     variant === 'dark'
       ? `background:${C.ink};color:#ffffff;border:1px solid ${C.ink}`
