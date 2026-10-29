@@ -9,6 +9,7 @@ import { safeNext, siteUrl } from '@/lib/site'
 import { createServiceClient, createSessionClient } from '@/lib/supabase/server'
 import { verifyTurnstile } from '@/lib/turnstile'
 import { fieldErrors, passwordSchema, registrationSchema } from '@/lib/validation'
+import { splitEmails } from '@/lib/emailList'
 
 export type FormState = { error?: string; fields?: Record<string, string>; ok?: boolean; values?: Record<string, string> }
 
@@ -87,7 +88,7 @@ export async function registerAction(_prev: FormState, formData: FormData): Prom
     if (profile?.status === 'pending') {
       const settings = await getSettings()
       await sendEmail({
-        to: settings.registration_notify_email,
+        to: splitEmails(settings.registration_notify_email),
         ...registrationNotifyEmail({
           company_name: d.company_name,
           ico: d.ico,

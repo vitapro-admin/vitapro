@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { splitEmails } from '@/lib/emailList'
 
 const line = (max: number) =>
   z
@@ -101,9 +102,21 @@ export const productSchema = z.object({
   sort_order: z.coerce.number().int().min(0).max(100000),
 })
 
+/** Jedna alebo viac adries (čiarka/bodkočiarka) – uloží sa ako „a@x.sk, b@y.sk“. */
+const emailList = z
+  .string()
+  .transform(splitEmails)
+  .pipe(
+    z
+      .array(z.string().email('Neplatný email.'))
+      .min(1, 'Zadajte aspoň jeden email.')
+      .max(10, 'Najviac 10 adries.'),
+  )
+  .transform((list) => [...new Set(list)].join(', '))
+
 export const settingsSchema = z.object({
-  order_email: z.string().trim().email('Neplatný email.'),
-  registration_notify_email: z.string().trim().email('Neplatný email.'),
+  order_email: emailList,
+  registration_notify_email: emailList,
   sales_name: required(120),
   sales_email: z.string().trim().email('Neplatný email.'),
   sales_phone: line(40),

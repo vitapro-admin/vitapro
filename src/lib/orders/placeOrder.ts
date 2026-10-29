@@ -10,6 +10,7 @@ import { getSettings } from '@/lib/settings'
 import { siteUrl } from '@/lib/site'
 import { createServiceClient } from '@/lib/supabase/server'
 import type { Address, OrderCustomer, OrderDeliveryAddress, OrderItemRow, OrderRow, Product, Profile, Recurrence } from '@/lib/types'
+import { splitEmails } from '@/lib/emailList'
 
 export type PlaceOrderInput = {
   addressId: string
@@ -170,7 +171,7 @@ async function sendOrderEmails(orderId: string, payload: OrderPayload, which: 'i
     which === 'customer'
       ? null
       : sendEmail({
-          to: settings.order_email,
+          to: splitEmails(settings.order_email),
           replyTo: payload.customer.email,
           ...internalOrderEmail(payload),
           attachments: [

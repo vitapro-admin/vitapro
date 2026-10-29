@@ -16,8 +16,8 @@ export function SettingsForm({ settings: s }: { settings: Settings }) {
 
       <fieldset className="space-y-5">
         <legend className="eyebrow mb-5 text-ink-mute">Emaily</legend>
-        <Field label="Kam chodia objednávky" name="order_email" type="email" required defaultValue={s.order_email} error={e.order_email} hint="Sem chodí každá nová objednávka, zrušenie a ukončenie pravidelnej dodávky." />
-        <Field label="Kam chodia nové registrácie" name="registration_notify_email" type="email" required defaultValue={s.registration_notify_email} error={e.registration_notify_email} />
+        <Field label="Kam chodia objednávky" name="order_email" type="text" inputMode="email" required defaultValue={s.order_email} error={e.order_email} hint="Sem chodí každá nová objednávka, zrušenie a ukončenie pravidelnej dodávky. Viac adries oddeľte čiarkou." />
+        <Field label="Kam chodia nové registrácie" name="registration_notify_email" type="text" inputMode="email" required defaultValue={s.registration_notify_email} error={e.registration_notify_email} hint="Viac adries oddeľte čiarkou." />
       </fieldset>
 
       <fieldset className="space-y-5">

@@ -4,6 +4,7 @@ import { sendEmail } from '@/lib/email/send'
 import { getSettings } from '@/lib/settings'
 import { createServiceClient } from '@/lib/supabase/server'
 import type { OrderRow } from '@/lib/types'
+import { splitEmails } from '@/lib/emailList'
 
 export type CancelResult =
   | { ok: true; orderNumber: string }
@@ -75,7 +76,7 @@ export async function cancelOrder(
     via,
   }
   await Promise.all([
-    sendEmail({ to: settings.order_email, replyTo: info.email, ...internalCancellationEmail(info) }),
+    sendEmail({ to: splitEmails(settings.order_email), replyTo: info.email, ...internalCancellationEmail(info) }),
     sendEmail({ to: info.email, replyTo: settings.sales_email, ...customerCancellationEmail(info) }),
   ])
   return { ok: true, orderNumber: cancelled.order_number }
