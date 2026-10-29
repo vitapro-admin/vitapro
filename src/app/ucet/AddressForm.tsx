@@ -23,16 +23,20 @@ export function AddressForm({ address, onDone }: { address?: Address; onDone?: (
     <form ref={formRef} action={action} className="space-y-4">
       <FormError message={state.error} />
       {a && <input type="hidden" name="id" value={a.id} />}
-      <div className="grid gap-4 sm:grid-cols-2">
-        <Field label="Názov adresy" name="label" placeholder="napr. Prevádzka Košice" defaultValue={a?.label} error={e.label} />
-        <Field label="Firma / prevádzka" name="company" defaultValue={a?.company} error={e.company} />
-      </div>
       <Field label="Ulica a číslo" name="street" required defaultValue={a?.street} error={e.street} />
       <div className="grid gap-4 sm:grid-cols-[1fr_2fr_1.2fr]">
         <Field label="PSČ" name="zip" required defaultValue={a?.zip} error={e.zip} />
         <Field label="Mesto" name="city" required defaultValue={a?.city} error={e.city} />
         <Field label="Krajina" name="country" defaultValue={a?.country ?? 'Slovensko'} error={e.country} />
       </div>
+      <Field
+        label="Názov prevádzky"
+        name="company"
+        placeholder="napr. Bistro Jablko – centrum"
+        defaultValue={a?.company || a?.label}
+        error={e.company}
+        hint="Pod týmto názvom si adresu vyberiete pri objednávke a uvidí ho aj vodič."
+      />
       <div className="grid gap-4 sm:grid-cols-2">
         <Field label="Kontakt pri preberaní" name="contact_name" defaultValue={a?.contact_name} error={e.contact_name} />
         <Field label="Telefón" name="contact_phone" type="tel" defaultValue={a?.contact_phone} error={e.contact_phone} />
