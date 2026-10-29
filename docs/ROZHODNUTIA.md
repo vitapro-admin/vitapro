@@ -26,6 +26,8 @@ Priebežný záznam dohôd s klientom (AQUA PRO EUROPE, a.s.).
 ## Pri spustení (checklist)
 - **Zapnúť indexovanie:** vo Verceli nastaviť `ALLOW_INDEXING=true` (Config, Production) a nasadiť znova.
 - Prejsť na Vercel Pro (komerčné použitie) a Supabase Pro (zálohy).
+- Po prechode na Vercel Pro prepnúť repozitár na súkromný (Hobby nasadzuje zo súkromného repozitára len commity vlastníka).
+- Zrušiť starý projekt na Verceli (účet peterivan78).
 - Zmazať testovacie účty a objednávky.
 
 ## Neskôr
