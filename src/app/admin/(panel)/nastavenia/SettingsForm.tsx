@@ -16,7 +16,7 @@ export function SettingsForm({ settings: s }: { settings: Settings }) {
 
       <fieldset className="space-y-5">
         <legend className="eyebrow mb-5 text-ink-mute">Emaily</legend>
-        <Field label="Kam chodia objednávky" name="order_email" type="email" required defaultValue={s.order_email} error={e.order_email} hint="Sem chodí štruktúrovaný email pre internú AI." />
+        <Field label="Kam chodia objednávky" name="order_email" type="email" required defaultValue={s.order_email} error={e.order_email} hint="Sem chodí každá nová objednávka, zrušenie a ukončenie pravidelnej dodávky." />
         <Field label="Kam chodia nové registrácie" name="registration_notify_email" type="email" required defaultValue={s.registration_notify_email} error={e.registration_notify_email} />
       </fieldset>
 
@@ -24,7 +24,7 @@ export function SettingsForm({ settings: s }: { settings: Settings }) {
         <legend className="eyebrow mb-5 text-ink-mute">Kontakt na obchodné oddelenie (zobrazuje sa na webe)</legend>
         <Field label="Názov" name="sales_name" required defaultValue={s.sales_name} error={e.sales_name} />
         <div className="grid gap-5 sm:grid-cols-2">
-          <Field label="Email" name="sales_email" type="email" required defaultValue={s.sales_email} error={e.sales_email} />
+          <Field label="Email" name="sales_email" type="email" required defaultValue={s.sales_email} error={e.sales_email} hint="Zobrazuje sa na webe a sem idú odpovede zákazníkov na potvrdenia." />
           <Field label="Telefón" name="sales_phone" type="tel" defaultValue={s.sales_phone} error={e.sales_phone} />
         </div>
       </fieldset>
