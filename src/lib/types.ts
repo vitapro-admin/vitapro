@@ -38,6 +38,8 @@ export type Profile = {
   billing_country: string
   status: ProfileStatus
   role: UserRole
+  /** Hlavný admin – cez web sa nedá zablokovať ani zmeniť (migrácia 0005). */
+  is_superadmin?: boolean
   ico_known: boolean
   approved_at: string | null
   admin_note: string

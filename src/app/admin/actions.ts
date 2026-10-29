@@ -144,7 +144,9 @@ export async function setClientStatusAction(formData: FormData) {
   if (id === admin.userId) return // admin si nezablokuje sám seba
 
   const db = createServiceClient()
-  const { data: before } = await db.from('profiles').select('status, contact_name, email, approved_at').eq('id', id).single()
+  const { data: before } = await db.from('profiles').select('status, role, is_superadmin, contact_name, email, approved_at').eq('id', id).single()
+  // Adminov (a superadmina) cez web neblokujeme – rieši sa to v Supabase.
+  if (before && (before.role === 'admin' || before.is_superadmin) && status !== 'approved') return
   await db
     .from('profiles')
     .update({

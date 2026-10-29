@@ -55,7 +55,7 @@ export default async function AdminClientsPage({ searchParams }: PageProps<'/adm
                     {c.company_name || '(bez názvu)'}
                     <Badge tone={TONE[c.status]}>{PROFILE_STATUS_LABEL[c.status]}</Badge>
                     {c.ico_known ? <Badge tone="info">IČO v zozname klientov</Badge> : <Badge>IČO nie je v zozname</Badge>}
-                    {c.role === 'admin' && <Badge>admin</Badge>}
+                    {c.role === 'admin' && <Badge>{c.is_superadmin ? 'superadmin' : 'admin'}</Badge>}
                   </p>
                   <p className="text-ink-soft">
                     IČO {c.ico || '—'}
