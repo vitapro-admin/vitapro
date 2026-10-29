@@ -8,7 +8,7 @@ import {
   internalStandingEndEmail,
 } from './templates'
 
-const payload = buildOrderPayload({
+const payloadInput = {
   orderNumber: 'OBJ-2026-00042',
   createdAt: '2026-10-22T08:30:00.000Z',
   customer: {
@@ -42,7 +42,8 @@ const payload = buildOrderPayload({
     { sku: 'VP-CVIKLA-033', name: 'Cvikla', quantity: 18 },
     { sku: 'VP-DULA-033', name: 'Dulienka', quantity: 6 },
   ],
-})
+}
+const payload = buildOrderPayload(payloadInput)
 
 describe('buildOrderPayload', () => {
   it('numbers lines, totals units and crates, and drops a blank note', () => {
@@ -80,6 +81,16 @@ describe('customerConfirmationEmail', () => {
     expect(email.text).toContain('1. Cvikla [VP-CVIKLA-033] – 18 ks')
     expect(email.text).toContain('Spolu: 24 ks (2 prepravky)')
     expect(email.text).toContain('Požadovaný termín: 3. 11. 2026')
+  })
+})
+
+describe('without a requested date', () => {
+  it('says the order comes with the next water delivery', () => {
+    const p = buildOrderPayload({ ...payloadInput, requestedDate: null })
+    const email = customerConfirmationEmail(p)
+    expect(email.text).toContain('Objednávka Vám bude doručená pri najbližšej dodávke pramenitej vody AQUA PRO.')
+    expect(email.text).toContain('Kedy: pri najbližšej dodávke vody AQUA PRO')
+    expect(internalOrderEmail(p).text).not.toContain('Požadovaný termín')
   })
 })
 

@@ -142,8 +142,8 @@ export default async function AdminOrderDetailPage({ params }: PageProps<'/admin
             </tbody>
           </table>
           <dl className="mt-6 grid gap-2 text-sm sm:grid-cols-[10rem_1fr]">
-            <dt className="text-ink-mute">Požadovaný termín</dt>
-            <dd>{formatDateSk(order.requested_delivery_date)}</dd>
+            <dt className="text-ink-mute">Doručenie</dt>
+            <dd>{order.requested_delivery_date ? formatDateSk(order.requested_delivery_date) : 'pri najbližšej dodávke vody'}</dd>
             <dt className="text-ink-mute">Poznámka</dt>
             <dd className="whitespace-pre-wrap">{order.note || '—'}</dd>
           </dl>

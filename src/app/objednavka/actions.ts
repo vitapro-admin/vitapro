@@ -19,7 +19,6 @@ export async function submitOrderAction(_prev: OrderFormState, formData: FormDat
     }
     const parsed = orderSchema.safeParse({
       address_id: formData.get('address_id'),
-      requested_date: formData.get('requested_date') ?? '',
       note: formData.get('note') ?? '',
       recurrence: formData.get('recurrence') ?? '',
       replaces_order_id: formData.get('replaces_order_id') ?? '',
@@ -29,7 +28,7 @@ export async function submitOrderAction(_prev: OrderFormState, formData: FormDat
 
     const result = await placeOrder(viewer.profile, {
       addressId: parsed.data.address_id,
-      requestedDate: parsed.data.requested_date,
+      requestedDate: null, // termín sa nezadáva – doručuje sa s najbližšou dodávkou vody
       note: parsed.data.note,
       recurrence: parsed.data.recurrence,
       replacesOrderId: parsed.data.replaces_order_id,

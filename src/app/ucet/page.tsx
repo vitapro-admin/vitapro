@@ -144,7 +144,7 @@ export default async function AccountPage({ searchParams }: PageProps<'/ucet'>) 
                         <p>
                           {o.delivery_address.street}, {o.delivery_address.zip} {o.delivery_address.city}
                         </p>
-                        <p>Požadovaný termín: {formatDateSk(o.requested_delivery_date)}</p>
+                        {o.requested_delivery_date && <p>Požadovaný termín: {formatDateSk(o.requested_delivery_date)}</p>}
                         {o.note && <p>Poznámka: {o.note}</p>}
                         <div className="flex flex-wrap gap-5 pt-2">
                           <ReorderButton items={o.order_items} />

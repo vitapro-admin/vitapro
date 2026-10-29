@@ -18,13 +18,11 @@ export function CheckoutForm({
   products,
   addresses,
   crateSize,
-  minDate,
   activeStanding,
 }: {
   products: Product[]
   addresses: Address[]
   crateSize: number
-  minDate: string
   activeStanding: ActiveStanding[]
 }) {
   const { cart, setQuantity, hydrated } = useCart()
@@ -220,15 +218,6 @@ export function CheckoutForm({
 
         <section aria-labelledby="h-details" className="grid gap-5 sm:grid-cols-2">
           <h2 id="h-details" className="sr-only">Doplňujúce údaje</h2>
-          <div>
-            <label htmlFor="requested_date" className="mb-1.5 block text-sm font-medium">
-              {standing ? 'Prvá dodávka od' : 'Požadovaný termín dodania'}
-            </label>
-            <input id="requested_date" name="requested_date" type="date" min={minDate} className="field" />
-            <p className="mt-1.5 text-xs text-ink-mute">
-              {standing ? 'Nepovinné. Presné dni dodávok dohodne obchodné oddelenie podľa trasy.' : 'Nepovinné. Termín potvrdí obchodné oddelenie.'}
-            </p>
-          </div>
           <div className="sm:col-span-2">
             <label htmlFor="note" className="mb-1.5 block text-sm font-medium">
               Poznámka

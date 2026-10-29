@@ -66,11 +66,6 @@ export const profileSchema = z.object({
 
 export const orderSchema = z.object({
   address_id: z.string().uuid('Vyberte dodaciu adresu.'),
-  requested_date: z
-    .string()
-    .regex(/^\d{4}-\d{2}-\d{2}$/)
-    .nullable()
-    .or(z.literal('').transform(() => null)),
   note: z.string().trim().max(1000, 'Poznámka môže mať najviac 1000 znakov.'),
   recurrence: z
     .enum(['weekly', 'biweekly', 'monthly'])

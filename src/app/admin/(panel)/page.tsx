@@ -1,7 +1,7 @@
 import { requireAdminPage } from '@/lib/auth'
 import Link from 'next/link'
 import { AdminTitle, Badge, Empty, FilterTabs } from '@/components/admin/ui'
-import { formatDateSk, formatDateTimeSk } from '@/lib/email/templates'
+import { formatDateTimeSk } from '@/lib/email/templates'
 import { cancelDeadline, isWithinCancelWindow } from '@/lib/orders/cancelWindow'
 import { getSettings } from '@/lib/settings'
 import { createServiceClient } from '@/lib/supabase/server'
@@ -62,7 +62,6 @@ export default async function AdminOrdersPage({ searchParams }: PageProps<'/admi
                 <th className="px-4 py-3 font-medium">Vytvorená</th>
                 <th className="px-4 py-3 font-medium">Odberateľ</th>
                 <th className="px-4 py-3 font-medium">Množstvo</th>
-                <th className="px-4 py-3 font-medium">Termín</th>
                 <th className="px-4 py-3 font-medium">Stav</th>
               </tr>
             </thead>
@@ -87,7 +86,6 @@ export default async function AdminOrdersPage({ searchParams }: PageProps<'/admi
                   <td className="px-4 py-3 tabular-nums">
                     {o.total_units} ks <span className="text-ink-mute">/ {o.crates} prep.</span>
                   </td>
-                  <td className="px-4 py-3 text-ink-soft">{formatDateSk(o.requested_delivery_date)}</td>
                   <td className="px-4 py-3">
                     <Badge tone={TONE[o.status]}>{ORDER_STATUS_LABEL[o.status]}</Badge>
                     {o.recurrence && (

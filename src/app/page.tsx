@@ -137,7 +137,7 @@ function HowToOrder({ crateSize }: { crateSize: number }) {
     ['Registrácia', 'Zaregistrujte firmu – stačí IČO, kontakt a dodacia adresa.'],
     ['Schválenie', 'Obchodné oddelenie overí, že ste naším klientom, a účet aktivuje.'],
     ['Objednávka', `Vyberte chute po celých prepravkách (${crateSize} ks, ľubovoľný mix) a dodaciu adresu.`],
-    ['Potvrdenie', 'Dostanete email so súhrnom. Termín dodania potvrdí obchodné oddelenie.'],
+    ['Doručenie', 'Dostanete email so súhrnom. Šťavy vám prinesieme pri najbližšej dodávke pramenitej vody AQUA PRO.'],
   ]
   return (
     <section id="ako-objednat" className="border-t border-line bg-paper-deep/50">

@@ -44,8 +44,9 @@ function addressLines(a: OrderDeliveryAddress): string[] {
   ].filter(Boolean)
 }
 
-// Farby a písma podľa webu (globals.css). Emailoví klienti nenačítajú Playfair
-// spoľahlivo, preto nadpisy padajú na Georgia.
+// Farby a písma podľa webu (globals.css). Webové písmo sa zámerne nenačítava
+// (externé štýly zhoršujú hodnotenie spamových filtrov) – nadpisy sú v Georgia,
+// Playfair sa použije len tam, kde ho má príjemca nainštalovaný.
 const C = {
   paper: '#f6f2eb',
   paperDeep: '#ede6da',
@@ -74,7 +75,6 @@ export function layout(title: string, o: LayoutOptions, body: string): string {
   const site = (path: string) => (o.siteBase ? `${o.siteBase}${path}` : siteUrl(path))
   return `<!doctype html><html lang="sk"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="color-scheme" content="light only"><title>${escapeHtml(title)}</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
 </head>
 <body style="margin:0;padding:0;background:${C.paper};font-family:${SANS};color:${C.ink};-webkit-font-smoothing:antialiased">
 ${o.preheader ? `<div style="display:none;max-height:0;overflow:hidden;opacity:0">${escapeHtml(o.preheader)}</div>` : ''}
@@ -163,6 +163,16 @@ function standingLine(p: OrderPayload): string {
   return `Pravidelná dodávka: ${p.standing.label}${from}${replaces}`
 }
 
+/** Text o doručení – šťavy sa vozia s najbližšou dodávkou vody, termín sa nezadáva. */
+export const DELIVERY_NOTE = 'Objednávka Vám bude doručená pri najbližšej dodávke pramenitej vody AQUA PRO.'
+
+/** Riadok o termíne: dátum len pri starších objednávkach, ktoré ho ešte mali. */
+function deliveryWhen(p: OrderPayload): [string, string] {
+  return p.delivery.requested_date
+    ? [dateLabel(p), formatDateSk(p.delivery.requested_date)]
+    : ['Kedy', 'pri najbližšej dodávke vody AQUA PRO']
+}
+
 function dateLabel(p: OrderPayload): string {
   return p.standing ? 'Prvá dodávka' : 'Požadovaný termín'
 }
@@ -176,19 +186,19 @@ export function customerConfirmationEmail(p: OrderPayload, cancel?: CancelLink):
   const html = layout(
     subject,
     {
-      preheader: `Objednávka ${p.order_number} · ${p.totals.units} ks · ${dateLabel(p).toLowerCase()} ${formatDateSk(p.delivery.requested_date)}`,
+      preheader: `Objednávka ${p.order_number} · ${p.totals.units} ks · doručíme pri najbližšej dodávke vody`,
       eyebrow: `Objednávka ${p.order_number}`,
       heading: p.standing ? 'Pravidelná dodávka' : 'Ďakujeme,',
       headingEm: p.standing ? 'je nastavená' : 'objednávku sme prijali',
     },
     `<p style="margin:0 0 4px">${greeting}</p>
-<p style="margin:0">obchodné oddelenie vašu objednávku spracuje a ozve sa vám s termínom dodania.</p>
+<p style="margin:0">${escapeHtml(DELIVERY_NOTE)}</p>
 ${p.standing ? note(`<strong>${escapeHtml(standingLine(p))}</strong><br><span style="color:${C.soft}">Dodávky budú chodiť automaticky, nemusíte nič objednávať. Zmeniť alebo ukončiť ich môžete v Môj účet.</span>`, 'brand') : ''}
 ${sectionTitle('Objednané šťavy')}
 ${itemsTableHtml(p)}
 ${sectionTitle('Doručenie')}
 ${facts([
-  [dateLabel(p), formatDateSk(p.delivery.requested_date)],
+  deliveryWhen(p),
   ['Adresa', delivery.join(', ')],
   ...(p.note ? ([['Poznámka', p.note]] as [string, string][]) : []),
 ])}
@@ -198,7 +208,7 @@ ${cancel ? cancelBlockHtml(cancel) : ''}`,
   )
   const text = `Dobrý deň,
 
-ďakujeme, vašu objednávku ${p.order_number} sme prijali. Obchodné oddelenie ju spracuje a ozve sa vám s termínom dodania.
+ďakujeme, vašu objednávku ${p.order_number} sme prijali. ${DELIVERY_NOTE}
 ${p.standing ? `\n${standingLine(p)}\nDodávky budú chodiť automaticky. Zmeniť alebo ukončiť ich môžete v Môj účet.\n` : ''}
 Položky:
 ${itemsText(p)}
@@ -207,7 +217,7 @@ Spolu: ${p.totals.units} ks (${cratesLabel(p.totals.crates)})
 Dodacia adresa:
 ${delivery.join('\n')}
 
-${dateLabel(p)}: ${formatDateSk(p.delivery.requested_date)}
+${deliveryWhen(p).join(': ')}
 ${p.note ? `Poznámka: ${p.note}\n` : ''}
 Ak potrebujete objednávku zmeniť, odpovedzte na tento email.
 ${cancel ? `\nTúto objednávku ste nezadali vy? Zrušiť ju môžete do ${formatDateTimeSk(cancel.deadline)}:\n${cancel.url}\n` : ''}
@@ -240,7 +250,7 @@ export function internalOrderEmail(p: OrderPayload): EmailContent {
   const html = layout(
     subject,
     {
-      preheader: `${c.company_name} · ${p.totals.units} ks · ${dateLabel(p).toLowerCase()} ${formatDateSk(p.delivery.requested_date)}`,
+      preheader: `${c.company_name} · ${p.totals.units} ks · ${cratesLabel(p.totals.crates)}`,
       eyebrow: `${p.standing ? (p.standing.replaces_order_number ? 'Zmena trvalej objednávky' : 'Trvalá objednávka') : 'Nová objednávka'} ${p.order_number} · ${formatDateTimeSk(p.created_at)}`,
       heading: c.company_name,
     },
@@ -250,7 +260,7 @@ ${itemsTableHtml(p, true)}
 ${p.packaging ? `<p style="margin:10px 0 0;font-size:13px;color:${C.mute}">Prepravky: ${escapeHtml(p.packaging.name)} [${escapeHtml(p.packaging.sku)}] – ${p.packaging.quantity} ks</p>` : ''}
 ${sectionTitle(`Doručenie${d.label ? ` · ${d.label}` : ''}`)}
 ${facts([
-  [dateLabel(p), formatDateSk(p.delivery.requested_date)],
+  deliveryWhen(p),
   ['Adresa', addressLines(d).join(', ')],
   ['Poznámka', p.note ?? '—'],
 ])}
@@ -279,7 +289,7 @@ SPOLU: ${p.totals.units} ks (${cratesLabel(p.totals.crates)} po ${p.totals.crate
 DODACIA ADRESA${p.delivery.address.label ? ` (${p.delivery.address.label})` : ''}
 ${addressLines(p.delivery.address).join('\n')}
 
-${dateLabel(p)}: ${formatDateSk(p.delivery.requested_date)}
+${deliveryWhen(p).join(': ')}
 Poznámka: ${p.note ?? '—'}
 
 Údaje v strojovom formáte sú v prílohe objednavka-${p.order_number}.json.

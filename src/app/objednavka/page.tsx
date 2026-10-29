@@ -3,7 +3,6 @@ import Link from 'next/link'
 import { PageShell } from '@/components/PageShell'
 import { canOrder, requireViewer } from '@/lib/auth'
 import { getVisibleProducts } from '@/lib/catalog/getProducts'
-import { tomorrowInBratislava } from '@/lib/dates'
 import { getSettings } from '@/lib/settings'
 import { createServiceClient } from '@/lib/supabase/server'
 import type { Address, OrderRow } from '@/lib/types'
@@ -51,7 +50,7 @@ export default async function CheckoutPage() {
 
   return (
     <PageShell eyebrow="Objednávka" title="Dokončenie objednávky" width="wide">
-      <CheckoutForm products={products} addresses={(addresses ?? []) as Address[]} crateSize={settings.crate_size} minDate={tomorrowInBratislava()} activeStanding={activeStanding} />
+      <CheckoutForm products={products} addresses={(addresses ?? []) as Address[]} crateSize={settings.crate_size} activeStanding={activeStanding} />
     </PageShell>
   )
 }
