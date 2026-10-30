@@ -2,6 +2,7 @@
 
 import Image from 'next/image'
 import { useCart } from '@/components/cart/CartProvider'
+import { productPhoto } from '@/lib/productPhotos'
 import type { Product } from '@/lib/types'
 
 export function ProductGrid({ products, crateSize }: { products: Product[]; crateSize: number }) {
@@ -18,21 +19,36 @@ export function ProductGrid({ products, crateSize }: { products: Product[]; crat
 
 function ProductCard({ product: p, crateSize, priority }: { product: Product; crateSize: number; priority: boolean }) {
   const unavailable = p.status !== 'active'
-  const image = p.photo_url || p.illustration_url
+  const photo = productPhoto(p)
+  const dim = unavailable ? 'opacity-40 grayscale' : ''
   return (
     <article className="group flex h-full flex-col" aria-labelledby={`p-${p.slug}`}>
       <div className="relative aspect-[3/2] overflow-hidden rounded-lg bg-paper-deep/60">
         <span aria-hidden className="absolute inset-x-0 bottom-0 h-1" style={{ background: p.accent_color }} />
-        {image && (
+        {p.illustration_url && (
+          // S fotkou fľaše je ilustrácia vľavo a fľaša vpravo – neprekrývajú sa,
+          // inak by cez sklo a etiketu presvitala kresba.
+          <div className={`absolute inset-y-0 left-0 ${photo ? 'w-[64%]' : 'w-full'}`}>
+            <Image
+              src={p.illustration_url}
+              alt=""
+              fill
+              sizes="(min-width: 1024px) 360px, (min-width: 640px) 45vw, 92vw"
+              priority={priority}
+              className={`object-contain p-5 transition duration-500 ${photo ? 'group-hover:-translate-x-1' : 'group-hover:scale-[1.03]'} ${dim}`}
+            />
+          </div>
+        )}
+        {photo && (
+          // Fotka je na bielom pozadí – „multiply“ ju opticky vsadí do papierového podkladu.
           <Image
-            src={image}
-            alt=""
-            fill
-            sizes="(min-width: 1024px) 360px, (min-width: 640px) 45vw, 92vw"
+            src={photo}
+            alt={`Fľaša VITAPRO ${p.name}`}
+            width={400}
+            height={400}
+            sizes="(min-width: 1024px) 220px, (min-width: 640px) 28vw, 55vw"
             priority={priority}
-            className={`object-contain p-6 transition duration-500 group-hover:scale-[1.03] ${
-              unavailable ? 'opacity-40 grayscale' : ''
-            }`}
+            className={`absolute bottom-[4%] right-[2%] h-[94%] w-auto mix-blend-multiply transition duration-500 group-hover:-translate-y-1 ${dim}`}
           />
         )}
         {unavailable && (
